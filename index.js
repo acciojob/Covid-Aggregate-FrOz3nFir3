@@ -26,9 +26,9 @@ app.get("/totalActive",(req, res)=>{
   res.json({data:result})
 })
 
-let death = data.reduce((currentSum, currentObj)=>currentSum + currentObj.death, 0);
+let deaths = data.reduce((currentSum, currentObj)=>currentSum + currentObj.death, 0);
 app.get("/totalDeaths",(req, res)=>{
-  let result = [{"_id":"total", death}];
+  let result = [{"_id":"total", deaths}];
   res.json({data:result})
 })
 
@@ -45,7 +45,7 @@ function isHotSpot(details) {
 function calculateHotspot(details) {
  const {infected, recovered} = details;
  let rate = (infected - recovered) /infected;
-   return {state:details.state, rate: Number(String(rate.toFixed(5)))}
+   return {_id:details.state, rate: Number(String(rate.toFixed(5)))}
 }
 
 app.get("/healthyStates", (req, res)=>{
@@ -61,10 +61,10 @@ function isHealthy(details) {
 function calculateMortality(details) {
   const {death, infected} = details;
   let rate = death  / infected;
-  return {state:details.state, rate: Number(String(rate.toFixed(5)))}
+  return {_id:details.state, rate: Number(String(rate.toFixed(5)))}
 }
 
 function sortAscending(currentState, nextState) {
-  return currentState.state.localeCompare(nextState.state)
+  return currentState._id.localeCompare(nextState._id)
 }
 module.exports = app;
